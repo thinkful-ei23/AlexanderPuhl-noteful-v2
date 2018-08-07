@@ -1,22 +1,28 @@
-'use strict';
+"use strict";
 
-const express = require('express');
+const express = require("express");
 
 // Create an router instance (aka "mini-app")
 const router = express.Router();
 
 // TEMP: Simple In-Memory Database
-const data = require('../db/notes');
-const simDB = require('../db/simDB');
+const data = require("../db/notes");
+const simDB = require("../db/simDB");
 const notes = simDB.initialize(data);
-
+const knex = require("../knex");
 // Get All (and search by query)
-router.get('/', (req, res, next) => {
+router.get("/", (req, res, next) => {
   const { searchTerm } = req.query;
-
-  notes.filter(searchTerm)
-    .then(list => {
-      res.json(list);
+  knex.select("notes.id", "title", "content")
+    .from("notes")
+    .modify(function (queryBuilder) {
+      if (searchTerm) {
+        queryBuilder.where("title", "like", `%${searchTerm}%`);
+      }
+    })
+    .orderBy("notes.id")
+    .then(results => {
+      res.json(results);
     })
     .catch(err => {
       next(err);
@@ -24,15 +30,16 @@ router.get('/', (req, res, next) => {
 });
 
 // Get a single item
-router.get('/:id', (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   const id = req.params.id;
-
-  notes.find(id)
-    .then(item => {
-      if (item) {
-        res.json(item);
+  knex.select("notes.id", "notes.title", "notes.content")
+    .from("notes")
+    .where("notes.id", id)
+    .then(results => {
+      if(results) {
+        res.json(results[0]);
       } else {
-        next();
+        next(); // => 404 handler
       }
     })
     .catch(err => {
