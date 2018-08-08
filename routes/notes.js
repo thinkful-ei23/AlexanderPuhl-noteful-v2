@@ -13,7 +13,7 @@ const knex = require("../knex");
 // Get All (and search by query)
 router.get("/", (req, res, next) => {
   const { searchTerm } = req.query;
-  knex.select("notes.id", "title", "content")
+  knex.select("notes.id", "notes.title", "notes.content")
     .from("notes")
     .modify(function (queryBuilder) {
       if (searchTerm) {
