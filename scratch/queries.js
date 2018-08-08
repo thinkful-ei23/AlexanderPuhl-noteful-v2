@@ -29,8 +29,17 @@ const knex = require('../knex');
 //     console.error(err);
 //   });
 
-let findId = 1003;
+let noteId = 1003;
 let newTitle = "Blah Blah";
-let newContent = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi reiciendis deleniti at quis perspiciatis harum!";
-knex
-  .select("id")
+let newContent = "Blah Blah Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi reiciendis deleniti at quis perspiciatis harum!";
+knex("notes")
+  .where("notes.id", noteId)
+  .update({
+    title: "newTitle",
+    content: "newContent"
+  })
+  .then(results => console.log(JSON.stringify(results, null, 2)));
+
+knex.select("notes.id", "notes.title", "notes.content")
+  .from("notes")
+  .where()
