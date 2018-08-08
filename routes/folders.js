@@ -85,6 +85,17 @@ router.put("/:id", (req, res, next) => {
     });
 });
 
-
+/* ========== DELETE/REMOVE A SINGLE FOLDER ========== */
+router.delete("/:id", (req, res, next) => {
+  knex.del()
+    .where("id", req.params.id)
+    .from("folders")
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch(err => {
+      next(err);
+    });
+});
 
 module.exports = router;

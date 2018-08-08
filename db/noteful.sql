@@ -41,42 +41,42 @@ INSERT INTO notes (title, content, folder_id) VALUES
   (
     'The most boring article about cats you''ll ever read',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt .',
-    100
+    101
   ),
   (
     '7 things lady gaga has in common with cats',
     'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper v.',
-    100
+    101
   ),
   (
     'The most incredible article about cats you''ll ever read',
     'Lorem ipsum dolor sit amet, boring consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et do',
-    100
+    102
   ),
   (
     '10 ways cats can help you live to 100',
     'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Odio.',
-    100
+    102
   ),
   (
     '9 reasons you can blame the recession on cats',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. m.',
-    100
+    103
   ),
   (
     '10 ways marketers are making you addicted to cats',
     'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Odio pelleniat nisl.',
-    100
+    103
   ),
   (
     '11 ways investing in cats can make you a millionaire',
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aorum.',
-    100
+    103
   ),
   (
     'Why you should forget everything you learned about cats',
     'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Odio pellentesqsl.',
-    100
+    103
   );
 
 -- -- get all notes
