@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const knex = require('../knex');
+const express = require("express");
+const knex = require("../knex");
 
 const router = express.Router();
 
 /* ========== GET/READ ALL NOTES ========== */
-router.get('/', (req, res, next) => {
+router.get("/", (req, res, next) => {
   const searchTerm = req.query.searchTerm;
 
-  knex.select('id', 'title', 'content')
-    .from('notes')
+  knex.select("id", "title", "content")
+    .from("notes")
     .modify(function (queryBuilder) {
       if (searchTerm) {
-        queryBuilder.where('title', 'like', `%${searchTerm}%`);
+        queryBuilder.where("title", "like", `%${searchTerm}%`);
       }
     })
-    .orderBy('notes.id')
+    .orderBy("notes.id")
     .then(results => {
       res.json(results);
     })
@@ -26,12 +26,12 @@ router.get('/', (req, res, next) => {
 });
 
 /* ========== GET/READ SINGLE NOTES ========== */
-router.get('/:id', (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   const noteId = req.params.id;
 
-  knex.first('id', 'title', 'content')
-    .from('notes')
-    .where('id', noteId)
+  knex.first("id", "title", "content")
+    .from("notes")
+    .where("id", noteId)
     .then(result => {
       if (result) {
         res.json(result);
@@ -45,12 +45,12 @@ router.get('/:id', (req, res, next) => {
 });
 
 /* ========== POST/CREATE ITEM ========== */
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   const { title, content } = req.body;
 
   /***** Never trust users. Validate input *****/
   if (!title) {
-    const err = new Error('Missing `title` in request body');
+    const err = new Error("Missing `title` in request body");
     err.status = 400;
     return next(err);
   }
@@ -61,8 +61,8 @@ router.post('/', (req, res, next) => {
   };
 
   knex.insert(newItem)
-    .into('notes')
-    .returning(['id', 'title', 'content'])
+    .into("notes")
+    .returning(["id", "title", "content"])
     .then((results) => {
       const result = results[0];
       res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
@@ -73,13 +73,13 @@ router.post('/', (req, res, next) => {
 });
 
 /* ========== PUT/UPDATE A SINGLE ITEM ========== */
-router.put('/:id', (req, res, next) => {
+router.put("/:id", (req, res, next) => {
   const noteId = req.params.id;
   const { title, content } = req.body;
 
   /***** Never trust users. Validate input *****/
   if (!title) {
-    const err = new Error('Missing `title` in request body');
+    const err = new Error("Missing `title` in request body");
     err.status = 400;
     return next(err);
   }
