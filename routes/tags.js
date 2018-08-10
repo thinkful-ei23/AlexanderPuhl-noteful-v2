@@ -1,14 +1,16 @@
-'use strict';
+"use strict";
 
 const express = require('express');
 const router = express.Router();
 
 const knex = require('../knex');
 
+
+
 /* ========== GET/READ ALL TAGS ========== */
-router.get('/', (req, res, next) => {
-  knex.select('id', 'name')
-    .from('folders')
+router.get("/", (req, res, next) => {
+  knex.select("id", "name")
+    .from("tags")
     .then(results => {
       res.json(results);
     })
@@ -19,11 +21,11 @@ router.get('/', (req, res, next) => {
 
 /* ========== GET/READ SINGLE TAGS ========== */
 router.get('/:id', (req, res, next) => {
-  knex.first('id', 'name')
-    .where('id', req.params.id)
-    .from('folders')
+  knex.first("id", "name")
+    .where("id", req.params.id)
+    .from("tags")
     .then(result => {
-      if (result) {
+      if(result) {
         res.json(result);
       } else {
         next();
@@ -34,7 +36,7 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-/* ========== POST/CREATE ITEM ========== */
+/* ========== POST/CREATE TAGS ========== */
 router.post('/', (req, res, next) => {
   const { name } = req.body;
 
@@ -48,18 +50,17 @@ router.post('/', (req, res, next) => {
   const newItem = { name };
 
   knex.insert(newItem)
-    .into('folders')
+    .into('tags')
     .returning(['id', 'name'])
     .then((results) => {
+      // Uses Array index solution to get first item in results array
       const result = results[0];
       res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     })
-    .catch(err => {
-      next(err);
-    });
+    .catch(err => next(err));
 });
 
-/* ========== PUT/UPDATE A SINGLE ITEM ========== */
+/* ========== PUT/UPDATE A SINGLE TAGS ========== */
 router.put('/:id', (req, res, next) => {
   const { name } = req.body;
 
@@ -72,7 +73,7 @@ router.put('/:id', (req, res, next) => {
 
   const updateItem = { name };
 
-  knex('folders')
+  knex('tags')
     .update(updateItem)
     .where('id', req.params.id)
     .returning(['id', 'name'])
@@ -92,7 +93,7 @@ router.put('/:id', (req, res, next) => {
 router.delete('/:id', (req, res, next) => {
   knex.del()
     .where('id', req.params.id)
-    .from('folders')
+    .from('tags')
     .then(() => {
       res.status(204).end();
     })
@@ -100,5 +101,8 @@ router.delete('/:id', (req, res, next) => {
       next(err);
     });
 });
+
+
+
 
 module.exports = router;

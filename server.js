@@ -1,22 +1,23 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
 
-const { PORT } = require('./config');
+const { PORT } = require("./config");
 
-const notesRouter = require('./routes/notes');
-const foldersRouter = require('./routes/folders');
+const notesRouter = require("./routes/notes");
+const foldersRouter = require("./routes/folders");
+const tagsRouter = require("./routes/tags");
 
 // Create an Express application
 const app = express();
 
 // Log all requests
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // Create a static webserver
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Enable CORS support
 app.use(cors());
@@ -25,12 +26,13 @@ app.use(cors());
 app.use(express.json());
 
 // Mount router on "/api"
-app.use('/api/notes', notesRouter);
-app.use('/api/folders', foldersRouter);
+app.use("/api/notes", notesRouter);
+app.use("/api/folders", foldersRouter);
+app.use("/api/tags", tagsRouter);
 
 // Custom 404 Not Found route handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
+  const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
@@ -42,13 +44,15 @@ app.use((err, req, res, next) => {
     res.status(err.status).json(errBody);
   } else {
     console.error(err);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
 // Listen for incoming connections
 app.listen(PORT, function () {
   console.info(`Server listening on ${this.address().port}`);
-}).on('error', err => {
+}).on("error", err => {
   console.error(err);
 });
+
+
